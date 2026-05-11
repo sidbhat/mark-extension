@@ -170,9 +170,6 @@ function inaccessibleUrl(url) {
   return !url || /^(chrome|chrome-extension|edge|about|data|blob|devtools):/.test(url);
 }
 
-function isPdfUrl(url) {
-  return /\.pdf(\?.*)?$/i.test(url) || url.includes('chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai');
-}
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
@@ -599,10 +596,6 @@ async function changeHighlightColor(id, url, newColor) {
 // ── Jump to highlight ─────────────────────────────────────────────────────────
 async function jumpToHighlight(id, url) {
   if (inaccessibleUrl(url)) { showToast("Can't access this page type"); return; }
-  if (isPdfUrl(url)) {
-    showToast("PDFs aren't supported for highlighting");
-    return;
-  }
 
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -610,7 +603,6 @@ async function jumpToHighlight(id, url) {
     const sameUrl = normalizeUrl(tab.url) === normalizeUrl(url);
 
     if (sameUrl) {
-      // Always retry — the highlight may need restoring after a page rebuild
       retryScroll(tab.id, id);
     } else {
       await chrome.tabs.update(tab.id, { url });
@@ -1122,8 +1114,8 @@ function refreshSectionHeight(contentId) {
 
 // ── Summary overlay ───────────────────────────────────────────────────────────
 function showSummary() {
-  const url     = currentTabUrl ? normalizeUrl(currentTabUrl) : null;
-  const raw     = url ? (allHighlights[url] || allHighlights[currentTabUrl] || []) : [];
+  const url = currentUrl;
+  const raw = url ? (allHighlights[url] || []) : [];
   if (!raw.length) return;
 
   // Selection algorithm:
@@ -1190,6 +1182,15 @@ function wireEvents() {
   document.getElementById('summaryClose').addEventListener('click', () => {
     document.getElementById('summaryOverlay').hidden = true;
   });
+
+  // Help modal
+  const helpBackdrop = document.getElementById('helpBackdrop');
+  const openHelp  = () => { helpBackdrop.hidden = false; };
+  const closeHelp = () => { helpBackdrop.hidden = true; };
+  document.getElementById('helpBtn').addEventListener('click', openHelp);
+  document.getElementById('helpClose').addEventListener('click', closeHelp);
+  document.getElementById('helpGotIt').addEventListener('click', closeHelp);
+  helpBackdrop.addEventListener('click', e => { if (e.target === helpBackdrop) closeHelp(); });
 
   searchInput.addEventListener('input', () => {
     searchQuery = searchInput.value.trim();

@@ -16,6 +16,7 @@
       <div class="header-tagline">Highlight the web</div>
     </div>
     <div class="header-actions">
+      <button class="header-icon-btn" id="helpBtn" title="Help & shortcuts">?</button>
       <div class="menu-wrap" id="menuWrap">
         <button class="header-icon-btn" id="menuBtn" title="Menu">⋯</button>
         <div class="export-menu" id="exportMenu" hidden>
@@ -134,6 +135,91 @@
   <div class="toast" id="toast">
     <span id="toastMsg"></span>
     <button id="toastUndo" hidden>Undo</button>
+  </div>
+
+  <!-- Help modal -->
+  <div class="help-backdrop" id="helpBackdrop" hidden>
+    <div class="help-modal">
+      <div class="help-header">
+        <span class="help-title">Mark — Help</span>
+        <button class="help-close" id="helpClose" title="Close">✕</button>
+      </div>
+      <div class="help-body">
+
+        <div class="help-section-label">Highlight on any page</div>
+        <div class="shortcut-grid">
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Select text</kbd></div>
+            <span class="shortcut-desc">Toolbar appears — pick a color</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Alt</kbd><kbd>1</kbd></div>
+            <span class="shortcut-desc">Highlight yellow</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Alt</kbd><kbd>2</kbd></div>
+            <span class="shortcut-desc">Highlight green</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Alt</kbd><kbd>3</kbd></div>
+            <span class="shortcut-desc">Highlight blue</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Alt</kbd><kbd>4</kbd></div>
+            <span class="shortcut-desc">Highlight red</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Esc</kbd></div>
+            <span class="shortcut-desc">Dismiss toolbar</span>
+          </div>
+        </div>
+
+        <div class="help-section-label">Panel</div>
+        <div class="shortcut-grid">
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Click row</kbd></div>
+            <span class="shortcut-desc">Jump to highlight on page</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Hover row</kbd></div>
+            <span class="shortcut-desc">Edit note, change color, delete</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>✦</kbd></div>
+            <span class="shortcut-desc">Key highlights summary</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>↓</kbd></div>
+            <span class="shortcut-desc">Export current page highlights</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>⋯</kbd></div>
+            <span class="shortcut-desc">Dark mode · Export all</span>
+          </div>
+        </div>
+
+        <div class="help-section-label">YouTube</div>
+        <div class="shortcut-grid">
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Transcript</kbd></div>
+            <span class="shortcut-desc">Toggle transcript panel in video page</span>
+          </div>
+          <div class="shortcut-row">
+            <div class="shortcut-keys"><kbd>Click timestamp</kbd></div>
+            <span class="shortcut-desc">Jump to that moment in the video</span>
+          </div>
+        </div>
+
+        <div class="help-links">
+          <a href="https://github.com/sidbhat/mark-extension/issues/new?labels=bug" target="_blank">🐛 Report a bug</a>
+          <a href="https://github.com/sidbhat/mark-extension/issues/new?labels=enhancement" target="_blank">✨ Request a feature</a>
+        </div>
+
+      </div>
+      <div class="help-footer">
+        <button class="help-got-it" id="helpGotIt">Got it</button>
+      </div>
+    </div>
   </div>
 
   <script src="side-panel.js"></script>

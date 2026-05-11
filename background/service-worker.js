@@ -39,31 +39,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.active) {
     chrome.runtime.sendMessage({ type: 'TAB_CHANGED', url: tab.url, tabId }).catch(() => {});
   }
-
-  // PDF intercept: redirect .pdf navigations to our viewer
-  if (changeInfo.url && isPdfUrl(changeInfo.url)) {
-    const viewerUrl = chrome.runtime.getURL('pdf/viewer.html') +
-                      '?url=' + encodeURIComponent(changeInfo.url);
-    chrome.tabs.update(tabId, { url: viewerUrl }).catch(() => {});
-  }
 });
-
-function isPdfUrl(url) {
-  if (!url) return false;
-  // Skip if already in our viewer
-  if (url.includes(chrome.runtime.id)) return false;
-  // Skip Chrome internal URLs
-  if (url.startsWith('chrome://') || url.startsWith('chrome-extension://')) return false;
-  try {
-    const u = new URL(url);
-    const path = u.pathname.toLowerCase();
-    // Match .pdf extension, or explicit type param
-    return path.endsWith('.pdf') ||
-           path.endsWith('.pdf/') ||
-           u.searchParams.get('type') === 'application/pdf' ||
-           u.searchParams.get('format') === 'pdf';
-  } catch { return false; }
-}
 
 // Relay HIGHLIGHTS_UPDATED from content scripts to the side panel.
 // Content scripts can't always message side panels directly in MV3.

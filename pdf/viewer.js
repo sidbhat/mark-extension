@@ -42,25 +42,36 @@ function pdfFilename(url) {
 }
 
 async function getPageHighlights() {
-  const { highlights = {} } = await chrome.storage.local.get('highlights');
-  return highlights[storageKey] || highlights[pdfUrl] || [];
+  const key = 'hl:' + storageKey;
+  const result = await chrome.storage.local.get(key);
+  return result[key] || [];
 }
 
 async function saveHighlight(hl) {
-  const { highlights = {} } = await chrome.storage.local.get('highlights');
-  if (!highlights[storageKey]) highlights[storageKey] = [];
-  highlights[storageKey].push(hl);
-  await chrome.storage.local.set({ highlights });
+  const key = 'hl:' + storageKey;
+  const result = await chrome.storage.local.get(['hl:index', key]);
+  const existing = result[key] || [];
+  existing.push(hl);
+  const idx = result['hl:index'] || {};
+  idx[storageKey] = { count: existing.length, title: hl.title, lastAt: hl.createdAt };
+  await chrome.storage.local.set({ [key]: existing, 'hl:index': idx });
   chrome.runtime.sendMessage({ type: 'HIGHLIGHTS_UPDATED', url: storageKey }).catch(() => {});
 }
 
 async function deleteHighlight(id) {
-  const { highlights = {} } = await chrome.storage.local.get('highlights');
-  if (highlights[storageKey]) {
-    highlights[storageKey] = highlights[storageKey].filter(h => h.id !== id);
-    if (!highlights[storageKey].length) delete highlights[storageKey];
-    await chrome.storage.local.set({ highlights });
+  const key = 'hl:' + storageKey;
+  const result = await chrome.storage.local.get(['hl:index', key]);
+  let list = result[key] || [];
+  list = list.filter(h => h.id !== id);
+  const idx = result['hl:index'] || {};
+  if (list.length === 0) {
+    delete idx[storageKey];
+    await chrome.storage.local.remove(key);
+  } else {
+    idx[storageKey] = { ...idx[storageKey], count: list.length };
+    await chrome.storage.local.set({ [key]: list });
   }
+  await chrome.storage.local.set({ 'hl:index': idx });
   document.querySelectorAll(`.mark-hl[data-id="${id}"]`).forEach(el => unwrap(el));
   chrome.runtime.sendMessage({ type: 'HIGHLIGHTS_UPDATED', url: storageKey }).catch(() => {});
 }
@@ -131,11 +142,8 @@ document.addEventListener('selectionchange', () => {
     }
     try {
       const range = sel.getRangeAt(0).cloneRange();
-      // Only show toolbar if selection is inside a text layer
-      if (range.startContainer.parentElement?.closest('.pdf-text-layer')) {
-        activeRange = range;
-        showToolbar(range);
-      }
+      activeRange = range;
+      showToolbar(range);
     } catch { hideToolbar(); }
   }, 160);
 });
@@ -265,12 +273,13 @@ function promptNote(id, anchorEl) {
   btn.textContent = 'Save note';
   btn.addEventListener('click', async () => {
     const note = ta.value.trim();
-    const { highlights = {} } = await chrome.storage.local.get('highlights');
-    const list = highlights[storageKey] || [];
+    const key  = 'hl:' + storageKey;
+    const result = await chrome.storage.local.get(key);
+    const list = result[key] || [];
     const obj  = list.find(h => h.id === id);
     if (obj) {
       obj.note = note;
-      await chrome.storage.local.set({ highlights });
+      await chrome.storage.local.set({ [key]: list });
       document.querySelectorAll(`.mark-hl[data-id="${id}"]`).forEach(el => el.title = note);
       chrome.runtime.sendMessage({ type: 'HIGHLIGHTS_UPDATED', url: storageKey }).catch(() => {});
     }
@@ -367,6 +376,58 @@ function restoreOne(hl, pageNum) {
   } catch {}
 }
 
+// ── Text layer builder — tries PDF.js TextLayer API, falls back to manual ──────
+async function buildTextLayer(page, viewport, container) {
+  container.innerHTML = '';
+
+  // Try PDF.js v4+ TextLayer API first
+  if (typeof pdfjsLib.TextLayer === 'function') {
+    try {
+      const tl = new pdfjsLib.TextLayer({
+        textContentSource: page.streamTextContent({ includeMarkedContent: false }),
+        container,
+        viewport,
+      });
+      await tl.render();
+      const n = container.querySelectorAll('span').length;
+      if (n > 0) {
+        const s = container.querySelector('span');
+        console.log('[Mark PDF] TextLayer OK, spans:', n);
+        console.log('[Mark PDF] First span style:', s?.getAttribute('style'));
+        console.log('[Mark PDF] First span pointer-events:', s && getComputedStyle(s).pointerEvents);
+        console.log('[Mark PDF] Container pointer-events:', getComputedStyle(container).pointerEvents);
+        return;
+      }
+    } catch (e) {
+      console.warn('[Mark PDF] TextLayer failed:', e.message);
+    }
+  }
+
+  // Manual fallback: works with any PDF.js version
+  const tc = await page.getTextContent();
+  const vt = viewport.transform;
+  for (const item of tc.items) {
+    if (!('str' in item) || !item.str) continue;
+    const tx = pdfjsLib.Util.transform(vt, item.transform);
+    const fontH = Math.sqrt(tx[2] * tx[2] + tx[3] * tx[3]);
+    const span = document.createElement('span');
+    span.textContent = item.str + (item.hasEOL ? ' ' : '');
+    span.style.cssText = [
+      'position:absolute',
+      `left:${tx[4]}px`,
+      `top:${tx[5] - fontH}px`,
+      `font-size:${Math.max(fontH, 1)}px`,
+      'font-family:sans-serif',
+      'white-space:pre',
+      'color:transparent',
+      'cursor:text',
+      'transform-origin:0 0',
+    ].join(';');
+    container.appendChild(span);
+  }
+  console.log('[Mark PDF] manual spans:', container.querySelectorAll('span').length);
+}
+
 // ── PDF rendering ─────────────────────────────────────────────────────────────
 async function renderPage(pageNum) {
   if (renderedPages.has(pageNum)) return;
@@ -390,18 +451,12 @@ async function renderPage(pageNum) {
 
   await page.render({ canvasContext: ctx, viewport }).promise;
 
-  // Text layer for selection + highlighting
-  const textContent = await page.getTextContent();
-  const textLayer   = wrap.querySelector('.pdf-text-layer');
+  const textLayer = wrap.querySelector('.pdf-text-layer');
   textLayer.style.width  = `${viewport.width}px`;
   textLayer.style.height = `${viewport.height}px`;
 
-  pdfjsLib.renderTextLayer({
-    textContentSource: textContent,
-    container: textLayer,
-    viewport,
-    textDivs: [],
-  }).promise.then(() => restorePageHighlights(pageNum));
+  await buildTextLayer(page, viewport, textLayer);
+  restorePageHighlights(pageNum);
 }
 
 // ── IntersectionObserver — render pages as they enter the viewport ─────────────

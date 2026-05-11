@@ -34,13 +34,7 @@
   "side_panel": {
     "default_path": "panel/side-panel.html"
   },
-  "web_accessible_resources": [
-    {
-      "resources": ["pdf/viewer.html", "pdf/viewer.js", "pdf/viewer.css",
-                    "pdf/pdf.mjs", "pdf/pdf.worker.mjs"],
-      "matches": ["<all_urls>"]
-    }
-  ],
+  "web_accessible_resources": [],
   "action": {
     "default_title": "Mark — Web Highlighter",
     "default_icon": {
