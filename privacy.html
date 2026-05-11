@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Mark: Web Highlighter</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      line-height: 1.7;
+      font-size: 16px;
+      padding: 48px 24px 96px;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #21262d;
+    }
+    .header-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .header-text h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0f6fc;
+    }
+    .header-text .updated {
+      font-size: 13px;
+      color: #8b949e;
+      margin-top: 2px;
+    }
+
+    /* summary banner */
+    .banner {
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-left: 3px solid #2563eb;
+      border-radius: 6px;
+      padding: 18px 20px;
+      margin-bottom: 48px;
+      font-size: 15px;
+      color: #c9d1d9;
+    }
+    .banner strong { color: #f0f6fc; }
+
+    /* sections */
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f0f6fc;
+      margin: 40px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #21262d;
+    }
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e6edf3;
+      margin: 24px 0 8px;
+    }
+
+    p { margin-bottom: 14px; color: #c9d1d9; }
+
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 14px;
+      color: #c9d1d9;
+    }
+    li { margin-bottom: 5px; }
+
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: #e6edf3;
+    }
+
+    /* tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    thead th {
+      text-align: left;
+      padding: 10px 14px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      color: #8b949e;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    tbody td {
+      padding: 10px 14px;
+      border: 1px solid #21262d;
+      color: #c9d1d9;
+      vertical-align: top;
+    }
+    tbody tr:hover td { background: #161b22; }
+
+    /* checklist */
+    .checklist { list-style: none; padding-left: 0; }
+    .checklist li::before { content: "✅ "; }
+
+    /* request cards */
+    .request-card {
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+    .request-card h3 { margin-top: 0; color: #58a6ff; }
+    .request-card dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; }
+    .request-card dt {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding-top: 3px;
+      white-space: nowrap;
+    }
+    .request-card dd { color: #c9d1d9; font-size: 14px; margin: 0; }
+
+    /* summary box */
+    .summary {
+      background: #0d2137;
+      border: 1px solid #1f4b72;
+      border-radius: 8px;
+      padding: 22px 24px;
+      margin-top: 40px;
+    }
+    .summary h2 { border-color: #1f4b72; margin-top: 0; }
+    .summary ul { color: #93c5fd; }
+
+    /* footer */
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid #21262d;
+      font-size: 13px;
+      color: #6e7681;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <img class="header-icon"
+         src="icons/icon-128.png"
+         alt="Mark icon" />
+    <div class="header-text">
+      <h1>Privacy Policy — Mark: Web Highlighter</h1>
+      <div class="updated">Last Updated: May 11, 2026 &nbsp;·&nbsp; Applies to version 1.1.0 and later</div>
+    </div>
+  </div>
+
+  <div class="banner">
+    <strong>The short version:</strong> everything stays on your device.
+    Nothing is ever sent to a server we operate. No account. No tracking. No analytics.
+  </div>
+
+  <!-- Overview -->
+  <h2>Overview</h2>
+  <p>Mark ("the Extension") is committed to protecting your privacy. This policy explains what data the Extension touches, where it lives, and what never happens to it.</p>
+
+  <!-- Data Collection -->
+  <h2>Data Collection</h2>
+  <p>We do not collect any personal data. Mark does not:</p>
+  <ul>
+    <li>Collect personal information</li>
+    <li>Track user behaviour</li>
+    <li>Send highlight data to external servers</li>
+    <li>Use analytics or tracking services</li>
+    <li>Store data in the cloud</li>
+    <li>Share data with third parties</li>
+  </ul>
+
+  <!-- Local Storage -->
+  <h2>Local Storage Only</h2>
+  <p>All highlight data is stored locally in your browser using Chrome's <code>chrome.storage.local</code> API.</p>
+
+  <p><strong>What we store locally:</strong></p>
+  <table>
+    <thead><tr><th>Data</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>Highlights</td><td>Text selections, colour labels, page URL, page title, timestamp</td></tr>
+      <tr><td>Notes</td><td>Private notes attached to individual highlights</td></tr>
+      <tr><td>Image clips</td><td>Images you right-click and clip to your collection</td></tr>
+      <tr><td>YouTube highlights</td><td>Highlighted transcript lines with video timestamps</td></tr>
+      <tr><td>User preferences</td><td>Theme, export settings, UI state</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Important:</strong></p>
+  <ul>
+    <li>This data <strong>never</strong> leaves your device</li>
+    <li>No network transmission occurs for any of the above</li>
+    <li>You can export all data to Markdown, Obsidian, or HTML at any time</li>
+    <li>You can delete individual highlights, pages, or all data via the side panel</li>
+    <li>Uninstalling the extension removes all stored data</li>
+  </ul>
+
+  <!-- Outbound Requests -->
+  <h2>Outbound Network Requests</h2>
+  <p>Mark makes exactly <strong>two</strong> outbound requests, and neither involves your highlight data:</p>
+
+  <div class="request-card">
+    <h3>1. Google Favicon API</h3>
+    <dl>
+      <dt>URL</dt>      <dd><code>https://www.google.com/s2/favicons</code></dd>
+      <dt>When</dt>     <dd>Automatically, to display page icons in the side panel</dd>
+      <dt>Sent</dt>     <dd>Only the domain name of pages you've highlighted (e.g. <code>example.com</code>)</dd>
+      <dt>Not sent</dt> <dd>Your highlights, notes, or any personal data</dd>
+      <dt>Policy</dt>   <dd><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></dd>
+    </dl>
+  </div>
+
+  <div class="request-card">
+    <h3>2. Notion API</h3>
+    <dl>
+      <dt>URL</dt>      <dd><code>https://api.notion.com</code></dd>
+      <dt>When</dt>     <dd>Only when you explicitly click "Export to Notion"</dd>
+      <dt>Sent</dt>     <dd>The highlight text and notes you choose to export, plus your Notion integration token</dd>
+      <dt>Your token</dt><dd>Stored in <code>chrome.storage.local</code> only — never transmitted to or stored by us</dd>
+      <dt>Note</dt>     <dd>If you never use Notion export, this request never fires</dd>
+    </dl>
+  </div>
+
+  <!-- Permissions -->
+  <h2>Permissions Explained</h2>
+  <table>
+    <thead><tr><th>Permission</th><th>Why it's needed</th></tr></thead>
+    <tbody>
+      <tr><td><code>storage</code></td><td>Save highlights to <code>chrome.storage.local</code> and preferences to <code>chrome.storage.sync</code></td></tr>
+      <tr><td><code>unlimitedStorage</code></td><td>Users may accumulate thousands of highlights; the standard 10 MB quota is insufficient</td></tr>
+      <tr><td><code>activeTab</code></td><td>Read the current tab's URL and title when saving a highlight</td></tr>
+      <tr><td><code>scripting</code></td><td>Inject the highlight restoration script when you revisit a page</td></tr>
+      <tr><td><code>sidePanel</code></td><td>Display the highlight library and controls in Chrome's native side panel</td></tr>
+      <tr><td><code>tabs</code></td><td>Detect tab navigation to restore highlights on the correct page</td></tr>
+      <tr><td><code>contextMenus</code></td><td>Add "Clip image with Mark" to the right-click menu on images</td></tr>
+      <tr><td><code>host_permissions: &lt;all_urls&gt;</code></td><td>Restore highlights on any page the user has previously highlighted</td></tr>
+      <tr><td><code>host_permissions: api.notion.com</code></td><td>Send highlights to Notion when you explicitly trigger a Notion export</td></tr>
+    </tbody>
+  </table>
+  <p>No permission is used for tracking, profiling, or analytics.</p>
+
+  <!-- Third-Party Services -->
+  <h2>Third-Party Services</h2>
+  <p>We do not use any third-party services for analytics, advertising, or telemetry:</p>
+  <ul>
+    <li>No Google Analytics</li>
+    <li>No tracking pixels or beacons</li>
+    <li>No advertising networks</li>
+    <li>No data brokers</li>
+    <li>No cloud storage services</li>
+    <li>No crash reporting (e.g. Sentry, Bugsnag)</li>
+    <li>No A/B testing services</li>
+  </ul>
+
+  <!-- Security -->
+  <h2>Data Security</h2>
+  <p><strong>Local storage security:</strong></p>
+  <ul>
+    <li>Uses Chrome's <code>chrome.storage.local</code> API</li>
+    <li>Protected by Chrome's process sandboxing</li>
+    <li>Only accessible by this extension — no other extension or website can read it</li>
+  </ul>
+  <p><strong>No network transmission:</strong></p>
+  <ul>
+    <li>Zero highlight data leaves your device</li>
+    <li>No external servers of ours are ever contacted</li>
+    <li>All highlighting, searching, and filtering happens entirely on-device</li>
+  </ul>
+
+  <!-- User Control -->
+  <h2>User Control</h2>
+  <p>You have complete control over your data at all times:</p>
+  <ul class="checklist">
+    <li>Export all highlights as Markdown (<code>.md</code>)</li>
+    <li>Export to Obsidian-formatted callout blocks</li>
+    <li>Push to Notion via your own integration token</li>
+    <li>Export as a standalone HTML notebook</li>
+    <li>Export per-page via the ↓ button next to any page</li>
+    <li>Delete individual highlights</li>
+    <li>Delete all highlights for a page</li>
+    <li>Clear all data via Chrome's extension settings</li>
+    <li>Uninstall the extension to remove everything</li>
+    <li>No account creation required — ever</li>
+  </ul>
+
+  <!-- Children -->
+  <h2>Children's Privacy</h2>
+  <p>Mark is a general-purpose reading and research tool intended for adults. We do not knowingly collect information from children under 13. Because no data is collected or transmitted, there is no personal data of any user — child or adult — on our servers.</p>
+
+  <!-- Changes -->
+  <h2>Changes to This Policy</h2>
+  <ul>
+    <li>We will update the "Last Updated" date at the top of this page</li>
+    <li>Significant changes will be noted in the Chrome Web Store update description</li>
+    <li>Continued use of the extension after changes constitutes acceptance</li>
+  </ul>
+
+  <!-- Compliance -->
+  <h2>Compliance</h2>
+  <p>This extension is designed to comply with:</p>
+  <ul>
+    <li>Chrome Web Store Developer Program Policies</li>
+    <li>General Data Protection Regulation (GDPR) — no data is collected or transferred outside the EU, because no data is collected at all</li>
+    <li>California Consumer Privacy Act (CCPA) — no personal information is sold or shared</li>
+  </ul>
+
+  <!-- Your Rights -->
+  <h2>Your Rights</h2>
+  <p>Because we collect no data:</p>
+  <table>
+    <thead><tr><th>Right</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Right to access</td><td>Nothing to access on our end — your data is already on your device</td></tr>
+      <tr><td>Right to deletion</td><td>Delete at any time via the side panel or Chrome settings</td></tr>
+      <tr><td>Right to export</td><td>Export anytime via Markdown, Obsidian, Notion, or HTML</td></tr>
+      <tr><td>Right to correction</td><td>Edit or delete any highlight directly</td></tr>
+      <tr><td>Right to portability</td><td>Full access to your own data via the export features</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Legal -->
+  <h2>Legal Disclaimer</h2>
+  <p>Mark is an independent productivity tool. It is not affiliated with, endorsed by, or officially connected to any website or service it operates on.</p>
+
+  <!-- Contact -->
+  <h2>Contact &amp; Support</h2>
+  <p>Questions about this privacy policy?</p>
+  <ul>
+    <li><strong>GitHub:</strong> <a href="https://github.com/sidbhat/mark-extension" target="_blank" rel="noopener">github.com/sidbhat/mark-extension</a></li>
+    <li><strong>Chrome Web Store:</strong> use the support tab on the extension listing</li>
+  </ul>
+  <p>To report a security vulnerability, please open an issue on GitHub or contact via the Chrome Web Store support page.</p>
+
+  <!-- Summary -->
+  <div class="summary">
+    <h2>Summary — Plain English</h2>
+    <ul>
+      <li>We don't collect anything</li>
+      <li>Everything stays on your computer</li>
+      <li>You can export or delete everything at any time</li>
+      <li>The only two outbound requests are: Google favicons (domain name only) and Notion (only if you choose to use it)</li>
+      <li>No tracking, no analytics, no servers of ours</li>
+    </ul>
+    <p style="margin-top:14px; color:#93c5fd;">That's it. Simple and private.</p>
+  </div>
+
+  <footer>
+    Effective May 11, 2026 &nbsp;·&nbsp; Version 1.1.0 and later &nbsp;·&nbsp;
+    <a href="https://github.com/sidbhat/mark-extension">github.com/sidbhat/mark-extension</a>
+  </footer>
+
+</div>
+</body>
+</html>
