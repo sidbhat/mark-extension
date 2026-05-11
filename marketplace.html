@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mark — Web Highlighter for Chrome | PDF, YouTube &amp; Obsidian Export</title>
+  <title>Mark — Web Highlighter for Chrome | YouTube &amp; Obsidian Export</title>
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
   <link rel="apple-touch-icon" href="icons/icon-128.png">
 
   <!-- Primary SEO -->
-  <meta name="description" content="Mark is a free Chrome extension that highlights text on any website, PDF, or YouTube transcript. No account. No cloud. Exports to Obsidian, Notion, and Markdown. Completely private.">
-  <meta name="keywords" content="web highlighter Chrome extension, highlight text in browser, PDF highlighter, YouTube transcript highlighter, Obsidian export highlighter, Notion highlight sync, privacy web highlighter, readwise alternative free, glasp alternative, no account highlighter">
+  <meta name="description" content="Mark is a free Chrome extension that highlights text on any website or YouTube transcript. No account. No cloud. Exports to Obsidian, Notion, and Markdown. Completely private.">
+  <meta name="keywords" content="web highlighter Chrome extension, highlight text in browser, YouTube transcript highlighter, Obsidian export highlighter, Notion highlight sync, privacy web highlighter, readwise alternative free, glasp alternative, no account highlighter">
   <meta name="author" content="Mark">
   <meta name="robots" content="index, follow">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Mark — Web Highlighter for Chrome">
-  <meta property="og:description" content="Highlight anything on the web. No account. No setup. Works on websites, PDFs, and YouTube. Exports to Obsidian, Notion, and Markdown.">
+  <meta property="og:description" content="Highlight anything on the web. No account. No setup. Works on websites and YouTube. Exports to Obsidian, Notion, and Markdown.">
   <meta property="og:site_name" content="Mark">
   <meta property="og:image" content="https://raw.githubusercontent.com/sidbhat/mark-extension/main/icons/icon-128.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Mark — Web Highlighter for Chrome">
-  <meta name="twitter:description" content="Highlight anything on the web. No account. Works on websites, PDFs, and YouTube. Exports to Obsidian, Notion, and Markdown.">
+  <meta name="twitter:description" content="Highlight anything on the web. No account. Works on websites and YouTube. Exports to Obsidian, Notion, and Markdown.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/sidbhat/mark-extension/main/icons/icon-128.png">
 
   <!-- Structured Data -->
@@ -35,11 +35,11 @@
     "name": "Mark — Web Highlighter",
     "operatingSystem": "Chrome",
     "applicationCategory": "BrowserApplication",
-    "description": "A free Chrome extension that highlights text on any website, PDF, or YouTube transcript. No account required. Exports to Obsidian, Notion, and Markdown.",
+    "description": "A free Chrome extension that highlights text on any website or YouTube transcript. No account required. Exports to Obsidian, Notion, and Markdown.",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "url": "https://chromewebstore.google.com/detail/mark-web-highlighter",
-    "featureList": ["Web highlighting", "PDF highlighting", "YouTube transcripts", "Obsidian export", "Notion export", "Markdown export", "Local & private storage", "Image clipping"],
-    "keywords": "web highlighter, Chrome extension, highlight text, PDF highlighter, YouTube transcript, Obsidian, Notion, privacy"
+    "featureList": ["Web highlighting", "YouTube transcripts", "Obsidian export", "Notion export", "Markdown export", "Local & private storage", "Image clipping"],
+    "keywords": "web highlighter, Chrome extension, highlight text, YouTube transcript, Obsidian, Notion, privacy"
   }
   </script>
   <style>
@@ -404,7 +404,7 @@
   </a>
 
   <h1 class="hero-title">Highlight anything.<br>Own it forever.</h1>
-  <p class="hero-sub">Mark is a Chrome side panel that permanently saves your highlights across every website, PDF, and YouTube transcript — no account, no cloud, zero friction.</p>
+  <p class="hero-sub">Mark is a Chrome side panel that permanently saves your highlights across every website and YouTube transcript — no account, no cloud, zero friction.</p>
 
   <div class="hero-colors">
     <span class="hero-color-chip yellow">Research</span>
@@ -424,7 +424,7 @@
   <div class="hero-stats">
     <span><strong>4</strong> highlight colors</span>
     <span class="hero-sep">·</span>
-    <span><strong>PDF &amp; YouTube</strong> built-in</span>
+    <span><strong>YouTube</strong> built-in</span>
     <span class="hero-sep">·</span>
     <span>Free &amp; on GitHub</span>
   </div>
@@ -442,11 +442,6 @@
         <span class="feature-icon">✏️</span>
         <div class="feature-name">One-click highlighting</div>
         <div class="feature-desc">Select text on any page. A toolbar appears. Pick a color. No account prompt, no loading screen — just a permanent highlight.</div>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">📄</span>
-        <div class="feature-name">Auto PDF highlighting</div>
-        <div class="feature-desc">Mark intercepts .pdf links and opens them in a built-in viewer automatically. Zero clicks to start highlighting a PDF.</div>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🎬</span>
@@ -522,7 +517,7 @@
       </div>
       <div class="compare-row">
         <div>PDF highlighting</div>
-        <div class="compare-mark-col"><span class="compare-yes">✓ Auto</span></div>
+        <div class="compare-mark-col"><span class="compare-no">✗</span></div>
         <div><span class="compare-partial">Button</span></div>
         <div><span class="compare-yes">✓</span></div>
         <div><span class="compare-no">✗</span></div>
@@ -638,11 +633,6 @@
       icon: '📊', name: '7-day activity strip', category: 'core', badge: 'new',
       desc: 'A compact activity strip in the panel header shows your highlight density over the last 7 days — like a GitHub contribution graph.',
       tags: ['Activity', 'Stats', 'Panel']
-    },
-    {
-      icon: '📄', name: 'Auto PDF highlighting', category: 'content', badge: 'unique',
-      desc: 'When you click any .pdf link, Mark automatically redirects it to a built-in PDF viewer powered by PDF.js. Zero clicks required — start highlighting immediately.',
-      tags: ['PDF', 'PDF.js', 'Auto-redirect']
     },
     {
       icon: '🎬', name: 'YouTube transcript panel', category: 'content', badge: 'unique',

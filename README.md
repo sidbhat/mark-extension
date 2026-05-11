@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Highlight anything on the web. No account. No setup. Highlights stay when you come back.</strong><br/>
-  A Chrome side panel highlighter for websites, PDFs, and YouTube transcripts — offline-first and completely private.
+  A Chrome side panel highlighter for websites and YouTube transcripts — offline-first and completely private.
 </p>
 
 <p align="center">
@@ -38,7 +38,6 @@ Come back tomorrow, next week, or next year — your highlights are exactly wher
 | | |
 |---|---|
 | ✏️ **One-click highlighting** | Select text → pick a color. Works on every website, article, and blog post |
-| 📄 **PDF highlighting** | Opens PDFs automatically in a built-in viewer — zero clicks required |
 | 🎬 **YouTube transcripts** | Searchable transcript panel injected into any YouTube video. Highlights store the exact timestamp |
 | 📓 **Obsidian export** | Export highlights as `> [!quote]` callout blocks — ready to paste into Obsidian |
 | 🔗 **Notion export** | Push highlights directly to a Notion page via integration token |
@@ -64,13 +63,6 @@ Come back tomorrow, next week, or next year — your highlights are exactly wher
 <p align="center">
   <img src="screenshots/youtube-transcript.png" alt="YouTube transcript panel with timestamps" width="100%" />
   <em>YouTube transcript panel — searchable, with timestamp-linked highlights</em>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="screenshots/pdf-viewer.png" alt="Built-in PDF viewer with highlights" width="100%" />
-  <em>Built-in PDF viewer — auto-opens, supports all four highlight colors</em>
 </p>
 
 <br/>
@@ -134,17 +126,6 @@ Mark injects a **Transcript** button into YouTube's action bar on every video wi
 - Search within the transcript
 - Select any line and highlight it — the exact video timestamp is stored with the highlight
 - Jump back to that moment from your panel
-
----
-
-## PDF Support
-
-Mark automatically intercepts `.pdf` URLs and opens them in a built-in viewer — no button to click. The viewer supports:
-
-- All four highlight colors
-- Notes on any highlight
-- Keyboard navigation (arrow keys, Page Up/Down, Alt+1–4)
-- Highlights saved to the same library as web highlights
 
 ---
 

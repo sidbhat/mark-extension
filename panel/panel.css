@@ -426,6 +426,7 @@ body {
 }
 .domain-name {
   flex: 1;
+  min-width: 0;
   font-size: var(--font-sm);
   font-weight: 600;
   color: var(--text-secondary);
