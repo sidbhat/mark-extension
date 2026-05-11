@@ -145,11 +145,12 @@
 
   // ── Keyboard shortcuts ─────────────────────────────────────────────────────
   // Only fires when the toolbar is visible (selection active) to avoid conflicts
-  const KEY_COLORS = { '1': 'yellow', '2': 'green', '3': 'blue', '4': 'red' };
+  // Use e.code (physical key) not e.key — on Mac, Option+1 produces '¡' not '1'
+  const KEY_COLORS = { 'Digit1': 'yellow', 'Digit2': 'green', 'Digit3': 'blue', 'Digit4': 'red' };
   document.addEventListener('keydown', e => {
-    if (e.altKey && KEY_COLORS[e.key] && activeRange) {
+    if (e.altKey && KEY_COLORS[e.code] && activeRange) {
       e.preventDefault();
-      applyHighlight(KEY_COLORS[e.key]);
+      applyHighlight(KEY_COLORS[e.code]);
       return;
     }
     if (e.key === 'Escape' && toolbar?.classList.contains('mark-toolbar--visible')) {

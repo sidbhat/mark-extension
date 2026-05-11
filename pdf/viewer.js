@@ -122,10 +122,10 @@ document.addEventListener('pointerdown', e => {
 });
 
 // Keyboard shortcuts: Alt+1-4 applies color; Escape hides toolbar
-const KEY_COLORS = { '1':'yellow', '2':'green', '3':'blue', '4':'red' };
+const KEY_COLORS = { 'Digit1':'yellow', 'Digit2':'green', 'Digit3':'blue', 'Digit4':'red' };
 document.addEventListener('keydown', e => {
-  if (e.altKey && KEY_COLORS[e.key] && activeRange) {
-    e.preventDefault(); applyHighlight(KEY_COLORS[e.key]); return;
+  if (e.altKey && KEY_COLORS[e.code] && activeRange) {
+    e.preventDefault(); applyHighlight(KEY_COLORS[e.code]); return;
   }
   if (e.key === 'Escape') hideToolbar();
   if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   scrollToPage(currentPage - 1);
