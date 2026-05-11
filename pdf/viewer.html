@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF — Mark</title>
+  <link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+
+  <!-- Loading overlay -->
+  <div id="load-overlay">
+    <div class="load-spinner"></div>
+    <span id="load-text">Loading PDF…</span>
+  </div>
+
+  <!-- Top toolbar -->
+  <div id="pdf-toolbar">
+    <span class="tb-brand">Mark</span>
+    <span class="tb-sep"></span>
+    <button class="tb-btn" id="btn-prev" title="Previous page (←)">◀</button>
+    <span id="page-info">— / —</span>
+    <button class="tb-btn" id="btn-next" title="Next page (→)">▶</button>
+    <span class="tb-sep"></span>
+    <button class="tb-btn" id="btn-zoom-out" title="Zoom out (-)">−</button>
+    <span id="zoom-info">100%</span>
+    <button class="tb-btn" id="btn-zoom-in" title="Zoom in (+)">+</button>
+    <span class="tb-sep"></span>
+    <span id="pdf-name"></span>
+  </div>
+
+  <!-- Page container -->
+  <div id="viewer-scroll">
+    <div id="viewer-pages"></div>
+  </div>
+
+  <!-- Mark floating toolbar -->
+  <div id="mark-toolbar">
+    <button class="tb-color-btn" data-color="yellow" style="background:#FBBF24" title="Yellow (Alt+1)"></button>
+    <button class="tb-color-btn" data-color="green"  style="background:#10B981" title="Green (Alt+2)"></button>
+    <button class="tb-color-btn" data-color="blue"   style="background:#3B9EFF" title="Blue (Alt+3)"></button>
+    <button class="tb-color-btn" data-color="red"    style="background:#EF4444" title="Red (Alt+4)"></button>
+    <span class="tb-divider"></span>
+    <button class="tb-note-btn" title="Add note">📝</button>
+  </div>
+
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>

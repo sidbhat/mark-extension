@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="panel-header">
+    <div class="header-icon">✏️</div>
+    <div class="header-text">
+      <div class="header-title">Mark</div>
+      <div class="header-tagline">Highlight the web</div>
+    </div>
+    <div class="header-actions">
+      <div class="menu-wrap" id="menuWrap">
+        <button class="header-icon-btn" id="menuBtn" title="Menu">⋯</button>
+        <div class="export-menu" id="exportMenu" hidden>
+          <button class="export-item" id="themeToggleBtn">🌙 Dark mode</button>
+          <div class="menu-divider"></div>
+          <button class="export-item" id="exportMdBtn">📄 Markdown</button>
+          <button class="export-item" id="exportObsidianBtn">📓 Obsidian</button>
+          <button class="export-item" id="exportNotebookBtn">🌐 View all</button>
+          <button class="export-item" id="exportNotionBtn">🔗 Notion</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notion settings modal -->
+  <div class="notion-modal-backdrop hidden" id="notionModalBackdrop">
+    <div class="notion-settings">
+      <div class="ns-title">Export to Notion</div>
+      <p class="ns-hint">1. Create an integration at <strong>notion.so/my-integrations</strong><br>2. Share a Notion page with it<br>3. Paste the token and page URL below</p>
+      <p class="ns-hint ns-hint--secure">🔒 Token is stored locally in Chrome and never leaves your device.</p>
+      <input class="ns-input" id="nsToken" type="password" placeholder="Integration token (secret_...)">
+      <input class="ns-input" id="nsPageId" type="text" placeholder="Parent page URL or ID">
+      <div class="ns-row">
+        <button class="ns-btn-primary" id="nsSaveBtn">Export →</button>
+        <button class="ns-btn-cancel" id="nsCancelBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity strip -->
+  <div class="activity-strip" id="activityStrip" title="Highlights over the last 7 days"></div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+      <circle cx="6.5" cy="6.5" r="4.5"/><path d="M10.5 10.5l3 3"/>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Search highlights...">
+    <button id="searchClear" title="Clear">✕</button>
+  </div>
+
+  <!-- Search active indicator -->
+  <div class="search-filter-bar" id="searchFilterBar" style="display:none">
+    <span>Filtering: <strong id="searchFilterQuery"></strong></span>
+    <button class="search-filter-clear" id="searchFilterClear">✕ clear</button>
+  </div>
+
+  <!-- Current page bar -->
+  <div class="page-bar" id="pageBar">
+    <img class="page-favicon" id="pageFavicon" src="" alt="">
+    <span class="page-domain" id="pageDomain">—</span>
+    <span class="page-count-pill" id="pageCountPill" style="display:none"></span>
+  </div>
+
+  <!-- Main content -->
+  <div class="panel-content" id="panelContent">
+
+    <!-- This page section -->
+    <section class="section" id="thisPageSection">
+      <div class="section-header" id="thisPageToggle">
+        <svg class="section-toggle" id="thisPageChevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M2 4l4 4 4-4"/>
+        </svg>
+        <span class="section-title">This page <span class="section-count" id="thisPageCount"></span></span>
+        <button class="section-export-btn" id="summaryBtn" style="display:none" title="Key highlights summary">✦</button>
+        <div class="page-export-wrap" id="pageExportWrap" style="display:none">
+          <button class="section-export-btn" id="pageExportBtn" title="Export this page">↓</button>
+          <div class="export-menu" id="pageExportMenu" hidden>
+            <button class="export-item" id="pageExportMdBtn">📄 Markdown</button>
+            <button class="export-item" id="pageExportObsidianBtn">📓 Obsidian</button>
+            <button class="export-item" id="pageExportNotionBtn">🔗 Notion</button>
+          </div>
+        </div>
+      </div>
+      <div class="section-content" id="thisPageList"></div>
+    </section>
+
+    <!-- Library section -->
+    <section class="section" id="librarySection">
+      <div class="section-header" id="libraryToggle">
+        <svg class="section-toggle" id="libraryChevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M2 4l4 4 4-4"/>
+        </svg>
+        <span class="section-title">Library <span class="section-count" id="libraryCount"></span></span>
+      </div>
+      <div class="section-content" id="libraryList"></div>
+    </section>
+
+  </div>
+
+  <!-- Summary overlay -->
+  <div id="summaryOverlay" hidden>
+    <div class="summary-header">
+      <span class="summary-title">Key highlights</span>
+      <button class="summary-close" id="summaryClose" title="Close">✕</button>
+    </div>
+    <div class="summary-sub" id="summarySub"></div>
+    <div class="summary-list" id="summaryList"></div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">✏️</div>
+    <div class="empty-title">Nothing highlighted yet</div>
+    <div class="empty-sub">Select any text on a webpage to highlight it. It'll be here when you come back.</div>
+  </div>
+
+  <!-- Hover preview tooltip -->
+  <div class="hl-tooltip" id="hlTooltip" hidden>
+    <div class="hl-tooltip-text" id="hlTooltipText"></div>
+    <div class="hl-tooltip-note" id="hlTooltipNote" hidden></div>
+    <div class="hl-tooltip-meta" id="hlTooltipMeta"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span id="toastMsg"></span>
+    <button id="toastUndo" hidden>Undo</button>
+  </div>
+
+  <script src="side-panel.js"></script>
+</body>
+</html>

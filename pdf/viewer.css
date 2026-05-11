@@ -1,0 +1,209 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #404040;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Top toolbar ── */
+#pdf-toolbar {
+  background: #1a1a2e;
+  color: #fff;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+.tb-brand {
+  font-weight: 800;
+  font-size: 15px;
+  color: #3B9EFF;
+  letter-spacing: 0.3px;
+  margin-right: 4px;
+}
+.tb-sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+.tb-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+  flex-shrink: 0;
+}
+.tb-btn:hover { background: rgba(255,255,255,0.18); }
+.tb-btn:disabled { opacity: 0.35; cursor: default; }
+#page-info {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  min-width: 60px;
+  text-align: center;
+  flex-shrink: 0;
+}
+#pdf-name {
+  flex: 1;
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 8px;
+}
+#zoom-info {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  min-width: 38px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Scroll area ── */
+#viewer-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 20px 0;
+}
+#viewer-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── Page wrapper ── */
+.pdf-page-wrap {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  line-height: 0;
+}
+.pdf-page-canvas { display: block; }
+.pdf-text-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  line-height: 1;
+  pointer-events: auto;
+}
+.pdf-text-layer span {
+  position: absolute;
+  white-space: pre;
+  transform-origin: 0% 0%;
+  cursor: text;
+  color: transparent;
+  /* preserve width of rendered glyphs */
+  font-size: 1px;
+}
+/* highlights */
+.mark-hl {
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.mark-hl[data-color="yellow"] { background: rgba(251,191,36,0.45); }
+.mark-hl[data-color="green"]  { background: rgba(16,185,129,0.40); }
+.mark-hl[data-color="blue"]   { background: rgba(59,158,255,0.40); }
+.mark-hl[data-color="red"]    { background: rgba(239,68,68,0.38); }
+.mark-hl:hover { opacity: 0.65; }
+.mark-hl--pulse { animation: markPulse 1.4s ease-in-out; }
+@keyframes markPulse {
+  0%   { box-shadow: 0 0 0 0px rgba(0,112,242,0); }
+  35%  { box-shadow: 0 0 0 5px rgba(0,112,242,0.5); }
+  70%  { box-shadow: 0 0 0 5px rgba(0,112,242,0.5); }
+  100% { box-shadow: 0 0 0 0px rgba(0,112,242,0); }
+}
+
+/* ── Floating toolbar (mirrors content.css) ── */
+#mark-toolbar {
+  position: fixed !important;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 9px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+#mark-toolbar.visible { display: flex; animation: toolbarIn 0.15s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes toolbarIn {
+  from { opacity:0; transform:scale(0.82) translateY(4px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.tb-color-btn {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.12s;
+  flex-shrink: 0;
+}
+.tb-color-btn:hover  { transform: scale(1.22); }
+.tb-color-btn:active { transform: scale(0.94); }
+.tb-divider {
+  width: 1px; height: 16px;
+  background: rgba(0,0,0,0.1);
+  margin: 0 2px;
+}
+.tb-note-btn {
+  width: 26px; height: 26px;
+  border-radius: 6px; border: none;
+  background: transparent; cursor: pointer;
+  font-size: 13px; display: flex;
+  align-items: center; justify-content: center;
+  transition: background 0.12s;
+  padding: 0;
+}
+.tb-note-btn:hover { background: rgba(0,0,0,0.07); }
+
+/* ── Loading / error ── */
+#load-overlay {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px; z-index: 100;
+  background: #2a2a2a; color: rgba(255,255,255,0.8);
+  font-size: 14px;
+}
+#load-overlay.hidden { display: none; }
+.load-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(255,255,255,0.15);
+  border-top-color: #3B9EFF;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-color-scheme: dark) {
+  #mark-toolbar {
+    background: #1E1E2E;
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  .tb-note-btn:hover { background: rgba(255,255,255,0.1); }
+}

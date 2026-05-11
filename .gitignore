@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V7
+.Trashes
+
+# Private strategy & competitive docs
+STRATEGY.md
+marketing.md
+
+# Claude context
+.claude/
+
+# Build artifacts & zips
+*.zip
+dist/
+node_modules/
+
+# Large PDF.js binary assets (downloaded separately)
+pdf/pdf.mjs
+pdf/pdf.worker.mjs
+
+# Environment & secrets
+.env
+.env.local
+*.pem

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark — Web Highlighter for Chrome | PDF, YouTube &amp; Obsidian Export</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+  <link rel="apple-touch-icon" href="icons/icon-128.png">
+
+  <!-- Primary SEO -->
+  <meta name="description" content="Mark is a free Chrome extension that highlights text on any website, PDF, or YouTube transcript. No account. No cloud. Exports to Obsidian, Notion, and Markdown. Completely private.">
+  <meta name="keywords" content="web highlighter Chrome extension, highlight text in browser, PDF highlighter, YouTube transcript highlighter, Obsidian export highlighter, Notion highlight sync, privacy web highlighter, readwise alternative free, glasp alternative, no account highlighter">
+  <meta name="author" content="Mark">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mark — Web Highlighter for Chrome">
+  <meta property="og:description" content="Highlight anything on the web. No account. No setup. Works on websites, PDFs, and YouTube. Exports to Obsidian, Notion, and Markdown.">
+  <meta property="og:site_name" content="Mark">
+  <meta property="og:image" content="https://raw.githubusercontent.com/sidbhat/mark-extension/main/icons/icon-128.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mark — Web Highlighter for Chrome">
+  <meta name="twitter:description" content="Highlight anything on the web. No account. Works on websites, PDFs, and YouTube. Exports to Obsidian, Notion, and Markdown.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/sidbhat/mark-extension/main/icons/icon-128.png">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Mark — Web Highlighter",
+    "operatingSystem": "Chrome",
+    "applicationCategory": "BrowserApplication",
+    "description": "A free Chrome extension that highlights text on any website, PDF, or YouTube transcript. No account required. Exports to Obsidian, Notion, and Markdown.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "url": "https://chromewebstore.google.com/detail/mark-web-highlighter",
+    "featureList": ["Web highlighting", "PDF highlighting", "YouTube transcripts", "Obsidian export", "Notion export", "Markdown export", "Local & private storage", "Image clipping"],
+    "keywords": "web highlighter, Chrome extension, highlight text, PDF highlighter, YouTube transcript, Obsidian, Notion, privacy"
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #3B9EFF;
+      --primary-dark: #2563EB;
+      --yellow: #FBBF24;
+      --green: #10B981;
+      --blue: #3B9EFF;
+      --red: #EF4444;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-tertiary: #94A3B8;
+      --bg: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --border: #E2E8F0;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+      --shadow-hover: 0 4px 12px rgba(0,0,0,0.12), 0 8px 32px rgba(0,0,0,0.06);
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Hero ── */
+    .site-header {
+      background: linear-gradient(135deg, #3B9EFF 0%, #2563EB 100%);
+      color: white;
+      padding: 52px 24px 48px;
+      text-align: center;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .brand-text { display: flex; flex-direction: column; text-align: left; }
+    .brand-name { font-size: 22px; font-weight: 700; color: white; letter-spacing: 0.3px; }
+    .brand-tagline { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.4px; }
+
+    .hero-title {
+      font-size: clamp(26px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.12;
+      margin-bottom: 14px;
+      letter-spacing: -0.6px;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.85);
+      max-width: 560px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .btn-hero {
+      height: 44px;
+      padding: 0 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-hero:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-hero-primary { background: white; color: var(--primary-dark); border: none; }
+    .btn-hero-ghost { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.4); }
+
+    .hero-stats {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 40px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .hero-stats strong { font-weight: 700; }
+    .hero-sep { opacity: 0.4; }
+
+    /* ── Color demo strip in hero ── */
+    .hero-colors {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-color-chip {
+      height: 28px;
+      padding: 0 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+    }
+    .hero-color-chip.yellow { background: rgba(251,191,36,0.9); color: #78350F; }
+    .hero-color-chip.green  { background: rgba(16,185,129,0.9); color: #064E3B; }
+    .hero-color-chip.blue   { background: rgba(59,158,255,0.85); color: white; }
+    .hero-color-chip.red    { background: rgba(239,68,68,0.9); color: white; }
+
+    /* ── Overview ── */
+    .overview {
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .overview-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 52px 24px;
+    }
+
+    .overview-headline {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .overview-title {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 12px;
+      max-width: 640px;
+    }
+
+    .overview-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .feature-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+
+    .feature-icon { font-size: 22px; margin-bottom: 10px; display: block; }
+    .feature-name { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+    .feature-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ── How to install ── */
+    .how-to {
+      background: #EFF6FF;
+      border: 1.5px solid #BFDBFE;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 40px 0 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .how-to-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .how-to-title { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+    .how-to-steps { font-size: 13px; color: var(--text-secondary); line-height: 1.7; list-style: none; }
+    .how-to-steps li { display: flex; align-items: baseline; gap: 6px; }
+    .how-to-steps li::before { content: attr(data-n); font-weight: 700; color: var(--primary); flex-shrink: 0; min-width: 14px; }
+    .how-to-steps code {
+      background: white; border: 1px solid var(--border); border-radius: 4px;
+      padding: 1px 5px; font-size: 12px;
+      font-family: ui-monospace, 'SF Mono', monospace; color: var(--text-primary);
+    }
+
+    kbd {
+      display: inline-block; background: #F1F5F9; border: 1px solid #CBD5E1;
+      border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px;
+      font-size: 11px; font-family: ui-monospace, 'SF Mono', monospace;
+      color: var(--text-primary); line-height: 1.5;
+    }
+
+    /* ── Main ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 44px 24px 80px; }
+
+    .section-label {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--primary); margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 800; letter-spacing: -0.3px; margin-bottom: 20px;
+    }
+
+    /* ── Feature tabs ── */
+    .controls { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+
+    .cat-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .cat-tab {
+      height: 36px; padding: 0 14px; border: 1.5px solid var(--border);
+      border-radius: 20px; background: var(--bg-card); color: var(--text-secondary);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .cat-tab:hover { border-color: var(--primary); color: var(--primary); }
+    .cat-tab.active { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
+
+    /* ── Section headers in card grid ── */
+    .grid-section-header {
+      display: flex; align-items: baseline; gap: 10px;
+      margin: 36px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    .grid-section-title { font-size: 13px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.8px; }
+    .grid-section-count { font-size: 12px; color: var(--text-tertiary); }
+
+    /* ── Feature showcase grid ── */
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+
+    .feat-card {
+      background: var(--bg-card); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 18px 18px 14px;
+      display: flex; flex-direction: column; gap: 10px;
+      box-shadow: var(--shadow); transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    }
+    .feat-card:hover { border-color: var(--primary); box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+
+    .feat-card-top { display: flex; align-items: flex-start; gap: 12px; }
+    .feat-icon {
+      font-size: 24px; line-height: 1; flex-shrink: 0;
+      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+      background: #F1F5F9; border-radius: 10px;
+    }
+    .feat-info { flex: 1; min-width: 0; }
+    .feat-name { font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; margin-bottom: 4px; }
+    .feat-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    .feat-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .feat-tags { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
+    .feat-tag { font-size: 10px; font-weight: 600; color: var(--text-tertiary); background: #F1F5F9; border-radius: 4px; padding: 2px 6px; }
+
+    .feat-badge {
+      height: 24px; padding: 0 10px; border-radius: 12px;
+      font-size: 11px; font-weight: 600; flex-shrink: 0;
+      display: inline-flex; align-items: center;
+    }
+    .feat-badge-unique { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+    .feat-badge-new    { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+    .feat-badge-free   { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+
+    /* ── Shortcuts table ── */
+    .shortcuts-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .shortcuts-table th { text-align: left; padding: 8px 12px; color: var(--text-tertiary); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 1px solid var(--border); }
+    .shortcuts-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: middle; }
+    .shortcuts-table tr:last-child td { border-bottom: none; }
+
+    /* ── Empty state ── */
+    #emptyState { display: none; text-align: center; padding: 60px 20px; color: var(--text-tertiary); }
+    #emptyState .es-icon { font-size: 40px; margin-bottom: 12px; }
+    #emptyState p { font-size: 14px; line-height: 1.6; }
+
+    /* ── Comparison strip ── */
+    .compare-wrap {
+      background: white; border: 1.5px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; margin-top: 48px;
+    }
+    .compare-head {
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .compare-head > div { padding: 12px 16px; font-size: 12px; font-weight: 700; color: var(--text-secondary); text-align: center; }
+    .compare-head > div:first-child { text-align: left; }
+    .compare-head .mark-col { color: var(--primary); }
+
+    .compare-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+    .compare-row:last-child { border-bottom: none; }
+    .compare-row:hover { background: #F8FAFF; }
+    .compare-row > div { padding: 11px 16px; font-size: 13px; color: var(--text-secondary); text-align: center; display: flex; align-items: center; justify-content: center; }
+    .compare-row > div:first-child { text-align: left; justify-content: flex-start; font-weight: 500; color: var(--text-primary); }
+    .compare-yes { color: #10B981; font-size: 16px; }
+    .compare-no  { color: #D1D5DB; font-size: 16px; }
+    .compare-partial { color: #F59E0B; font-size: 12px; font-weight: 600; }
+    .compare-mark-col { background: rgba(59,158,255,0.04); }
+
+    /* ── Footer ── */
+    .site-footer { text-align: center; padding: 32px 24px; border-top: 1px solid var(--border); background: var(--bg-card); }
+    .site-footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.8; }
+    .site-footer a { color: var(--primary); text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+
+    /* ── Toast ── */
+    #copyToast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: #0F172A; color: white; font-size: 13px; font-weight: 500;
+      padding: 10px 18px; border-radius: 8px; pointer-events: none;
+      transition: transform 0.25s ease, opacity 0.25s ease; opacity: 0; z-index: 100; white-space: nowrap;
+    }
+    #copyToast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    @media (max-width: 700px) {
+      .feat-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .how-to { flex-direction: column; gap: 10px; }
+      .compare-wrap { overflow-x: auto; }
+      .compare-head, .compare-row { grid-template-columns: 160px repeat(4, 80px); min-width: 500px; }
+      .hero-colors { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<header class="site-header">
+  <a class="brand" href="https://github.com/sidbhat/mark-extension">
+    <div class="brand-logo">✏️</div>
+    <div class="brand-text">
+      <span class="brand-name">Mark</span>
+      <span class="brand-tagline">Highlight the web</span>
+    </div>
+  </a>
+
+  <h1 class="hero-title">Highlight anything.<br>Own it forever.</h1>
+  <p class="hero-sub">Mark is a Chrome side panel that permanently saves your highlights across every website, PDF, and YouTube transcript — no account, no cloud, zero friction.</p>
+
+  <div class="hero-colors">
+    <span class="hero-color-chip yellow">Research</span>
+    <span class="hero-color-chip green">Key points</span>
+    <span class="hero-color-chip blue">YouTube timestamps</span>
+    <span class="hero-color-chip red">Review later</span>
+  </div>
+
+  <div class="hero-cta">
+    <a class="btn-hero btn-hero-primary" href="https://chromewebstore.google.com/detail/mark-web-highlighter" target="_blank" rel="noopener">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+      Add to Chrome — Free
+    </a>
+    <a class="btn-hero btn-hero-ghost" href="#features">See all features ↓</a>
+  </div>
+
+  <div class="hero-stats">
+    <span><strong>4</strong> highlight colors</span>
+    <span class="hero-sep">·</span>
+    <span><strong>PDF &amp; YouTube</strong> built-in</span>
+    <span class="hero-sep">·</span>
+    <span>Free &amp; on GitHub</span>
+  </div>
+</header>
+
+<!-- ── APP OVERVIEW ── -->
+<section class="overview">
+  <div class="overview-inner">
+    <p class="overview-headline">What is Mark?</p>
+    <h2 class="overview-title">The highlighter that actually works everywhere</h2>
+    <p class="overview-desc">Select any text on any webpage — a color toolbar appears instantly. Click a color. Done. Your highlight is saved permanently in Chrome, visible in the side panel, exportable to Obsidian or Notion, and there every time you come back.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">✏️</span>
+        <div class="feature-name">One-click highlighting</div>
+        <div class="feature-desc">Select text on any page. A toolbar appears. Pick a color. No account prompt, no loading screen — just a permanent highlight.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📄</span>
+        <div class="feature-name">Auto PDF highlighting</div>
+        <div class="feature-desc">Mark intercepts .pdf links and opens them in a built-in viewer automatically. Zero clicks to start highlighting a PDF.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎬</span>
+        <div class="feature-name">YouTube transcripts</div>
+        <div class="feature-desc">A searchable transcript panel injects into any YouTube video. Select transcript text to highlight — the exact video timestamp is saved.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📓</span>
+        <div class="feature-name">Obsidian export</div>
+        <div class="feature-desc">One click exports your highlights as native Obsidian callout blocks — complete with page title, domain, and timestamp.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔒</span>
+        <div class="feature-name">Truly private</div>
+        <div class="feature-desc">Everything in chrome.storage.local. No account, no server, no telemetry. Your highlights never leave your browser.</div>
+      </div>
+    </div>
+
+    <div class="how-to">
+      <div class="how-to-icon">💡</div>
+      <div class="how-to-body">
+        <div class="how-to-title">How to get started</div>
+        <ol class="how-to-steps">
+          <li data-n="1.">Click <strong>Add to Chrome</strong> above — takes under 10 seconds.</li>
+          <li data-n="2.">Go to any webpage and <strong>select any text</strong> — a color toolbar appears above your selection.</li>
+          <li data-n="3.">Pick a color to save the highlight. Open the <strong>Mark side panel</strong> to see all your highlights.</li>
+          <li data-n="4.">Use <code>Menu → Obsidian</code>, <code>Notion</code>, or <code>Markdown</code> to export anytime.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES SHOWCASE ── -->
+<main class="main" id="features">
+  <p class="section-label">Features</p>
+  <h2 class="section-title">Everything, explained</h2>
+
+  <div class="controls">
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-cat="all">All</button>
+      <button class="cat-tab" data-cat="core">Core</button>
+      <button class="cat-tab" data-cat="content">Content Types</button>
+      <button class="cat-tab" data-cat="export">Export</button>
+      <button class="cat-tab" data-cat="privacy">Privacy &amp; Perf</button>
+    </div>
+  </div>
+
+  <div id="featContainer"></div>
+  <div id="emptyState">
+    <div class="es-icon">🔍</div>
+    <p>No features match that filter.</p>
+  </div>
+
+  <!-- ── Comparison ── -->
+  <div style="margin-top: 60px;">
+    <p class="section-label">Comparison</p>
+    <h2 class="section-title">How Mark compares</h2>
+    <div class="compare-wrap">
+      <div class="compare-head">
+        <div>Feature</div>
+        <div class="mark-col">Mark ✏️</div>
+        <div>Glasp</div>
+        <div>Web Highlights</div>
+        <div>Readwise</div>
+      </div>
+      <div class="compare-row">
+        <div>No account required</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-partial">Optional</span></div>
+        <div><span class="compare-no">✗</span></div>
+      </div>
+      <div class="compare-row">
+        <div>PDF highlighting</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓ Auto</span></div>
+        <div><span class="compare-partial">Button</span></div>
+        <div><span class="compare-yes">✓</span></div>
+        <div><span class="compare-no">✗</span></div>
+      </div>
+      <div class="compare-row">
+        <div>YouTube transcripts</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓ + timestamp</span></div>
+        <div><span class="compare-partial">Redirect</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-no">✗</span></div>
+      </div>
+      <div class="compare-row">
+        <div>Obsidian export</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-no">✗</span></div>
+      </div>
+      <div class="compare-row">
+        <div>Notion export</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-no">✗</span></div>
+      </div>
+      <div class="compare-row">
+        <div>Works offline</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓ Always</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-yes">✓</span></div>
+        <div><span class="compare-no">✗</span></div>
+      </div>
+      <div class="compare-row">
+        <div>Image clipping</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-no">✗</span></div>
+        <div><span class="compare-partial">Box only</span></div>
+      </div>
+      <div class="compare-row">
+        <div>Free forever</div>
+        <div class="compare-mark-col"><span class="compare-yes">✓</span></div>
+        <div><span class="compare-yes">✓</span></div>
+        <div><span class="compare-partial">Freemium</span></div>
+        <div><span class="compare-no">$7.99/mo</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Keyboard shortcuts ── -->
+  <div style="margin-top: 60px;">
+    <p class="section-label">Keyboard Shortcuts</p>
+    <h2 class="section-title">Hands on the keyboard</h2>
+    <div style="background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);">
+      <table class="shortcuts-table">
+        <thead>
+          <tr><th>Shortcut</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><kbd>Alt</kbd> + <kbd>1</kbd></td><td>Highlight yellow</td></tr>
+          <tr><td><kbd>Alt</kbd> + <kbd>2</kbd></td><td>Highlight green</td></tr>
+          <tr><td><kbd>Alt</kbd> + <kbd>3</kbd></td><td>Highlight blue</td></tr>
+          <tr><td><kbd>Alt</kbd> + <kbd>4</kbd></td><td>Highlight red</td></tr>
+          <tr><td><kbd>Escape</kbd></td><td>Dismiss toolbar / close note prompt</td></tr>
+          <tr><td>Right-click image</td><td>Clip image with Mark</td></tr>
+          <tr><td>Right-click selection</td><td>Remove highlight</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>
+    Mark is a free, open-source Chrome extension.<br>
+    <a href="https://github.com/sidbhat/mark-extension">GitHub</a> ·
+    <a href="https://github.com/sidbhat/mark-extension/issues/new?labels=bug">🐛 Report a bug</a> ·
+    <a href="https://github.com/sidbhat/mark-extension/issues/new?labels=enhancement&title=Feature+Request%3A+">💡 Feature request</a> ·
+    <a href="https://chromewebstore.google.com/detail/mark-web-highlighter">Install on Chrome</a>
+  </p>
+</footer>
+
+<div id="copyToast">Copied!</div>
+
+<script>
+  const FEATURES = [
+    {
+      icon: '✏️', name: 'One-click highlighting', category: 'core', badge: 'free',
+      desc: 'Select any text on any webpage. A color toolbar appears above your selection. Click a color — the highlight is permanent. No signup, no loading screen.',
+      tags: ['Highlighting', 'Toolbar', 'All pages']
+    },
+    {
+      icon: '🎨', name: 'Four highlight colors', category: 'core', badge: 'free',
+      desc: 'Yellow, green, blue, red — each with a distinct RGBA fill. Use colors to signal meaning: research, key points, YouTube quotes, review-later.',
+      tags: ['Colors', 'Yellow', 'Green', 'Blue', 'Red']
+    },
+    {
+      icon: '📝', name: 'Notes on highlights', category: 'core', badge: 'free',
+      desc: 'Click the note icon on any highlight to add a private note. Notes appear in the side panel and all exports.',
+      tags: ['Notes', 'Annotations']
+    },
+    {
+      icon: '⌨️', name: 'Keyboard shortcuts', category: 'core', badge: 'free',
+      desc: 'Alt+1 through Alt+4 to highlight with the selected color while text is selected. Escape to dismiss. Designed for power users who keep hands on the keyboard.',
+      tags: ['Keyboard', 'Shortcuts', 'Power user']
+    },
+    {
+      icon: '🔍', name: 'Search across all highlights', category: 'core', badge: 'free',
+      desc: 'Type in the search bar to filter highlights by text or note content — across every saved page in your library.',
+      tags: ['Search', 'Filter', 'Library']
+    },
+    {
+      icon: '📊', name: '7-day activity strip', category: 'core', badge: 'new',
+      desc: 'A compact activity strip in the panel header shows your highlight density over the last 7 days — like a GitHub contribution graph.',
+      tags: ['Activity', 'Stats', 'Panel']
+    },
+    {
+      icon: '📄', name: 'Auto PDF highlighting', category: 'content', badge: 'unique',
+      desc: 'When you click any .pdf link, Mark automatically redirects it to a built-in PDF viewer powered by PDF.js. Zero clicks required — start highlighting immediately.',
+      tags: ['PDF', 'PDF.js', 'Auto-redirect']
+    },
+    {
+      icon: '🎬', name: 'YouTube transcript panel', category: 'content', badge: 'unique',
+      desc: 'A "Transcript" button appears in YouTube\'s action bar on any video with captions. Opens a searchable panel above the sidebar. Select transcript text to highlight — the exact video second is stored.',
+      tags: ['YouTube', 'Transcripts', 'Timestamps']
+    },
+    {
+      icon: '🌐', name: 'All websites', category: 'content', badge: 'free',
+      desc: 'Works on every webpage: news articles, documentation, academic papers, blogs, Wikipedia, Medium, Substack — any URL you can visit.',
+      tags: ['Web', 'All pages', 'Universal']
+    },
+    {
+      icon: '🖼️', name: 'Image clipping', category: 'content', badge: 'new',
+      desc: 'Right-click any image and select "Clip image with Mark" — saves the image URL and alt text as a visual highlight. Appears as a thumbnail in your panel and exports as markdown ![]() syntax.',
+      tags: ['Images', 'Clipping', 'Context menu']
+    },
+    {
+      icon: '📓', name: 'Obsidian export', category: 'export', badge: 'unique',
+      desc: 'Exports highlights as native Obsidian callout blocks: > [!quote] format with page title, domain, timestamp, and your note. Ready to paste — no reformatting needed.',
+      tags: ['Obsidian', 'Callouts', 'PKM', 'Markdown']
+    },
+    {
+      icon: '🔗', name: 'Notion integration', category: 'export', badge: 'unique',
+      desc: 'Enter your Notion integration token once — Mark pushes highlights directly to a Notion page as formatted blocks. Works with any page you\'ve shared with the integration.',
+      tags: ['Notion', 'API', 'Sync']
+    },
+    {
+      icon: '📋', name: 'Markdown export', category: 'export', badge: 'free',
+      desc: 'Clean Markdown export with color labels, timestamps, notes, and page URLs. Export all highlights or just the current page.',
+      tags: ['Markdown', '.md', 'Export']
+    },
+    {
+      icon: '🌐', name: 'HTML Notebook export', category: 'export', badge: 'free',
+      desc: 'Generates a beautiful standalone HTML file with a key highlights summary, table of contents, and all your highlights grouped by page.',
+      tags: ['HTML', 'Notebook', 'Shareable']
+    },
+    {
+      icon: '🔒', name: 'No account required', category: 'privacy', badge: 'unique',
+      desc: 'Mark never asks you to sign in. No email, no password, no OAuth. Highlight on the very first visit without any prompt.',
+      tags: ['Privacy', 'No account', 'Anonymous']
+    },
+    {
+      icon: '💾', name: 'Offline-first storage', category: 'privacy', badge: 'unique',
+      desc: 'All highlights stored in chrome.storage.local — physically in your browser profile on your device. Works on planes, trains, and anywhere without internet.',
+      tags: ['Offline', 'Local', 'chrome.storage']
+    },
+    {
+      icon: '🔄', name: 'Settings sync across devices', category: 'privacy', badge: 'new',
+      desc: 'Theme preference (dark/light) syncs across your Chrome devices via chrome.storage.sync — no server, no account. Highlights remain local.',
+      tags: ['Sync', 'Dark mode', 'Settings']
+    },
+    {
+      icon: '⚡', name: 'Lightweight, fast', category: 'privacy', badge: 'free',
+      desc: 'Content script is a tiny IIFE — no framework, no bundler overhead. Highlight storage uses per-URL keys so reads and writes only touch the relevant slice, even at 100K+ highlights.',
+      tags: ['Performance', 'Lightweight', 'Scale']
+    },
+  ];
+
+  const SECTIONS = [
+    { cat: 'core',    label: 'Core Highlighting',  emoji: '✏️' },
+    { cat: 'content', label: 'Content Types',       emoji: '📄' },
+    { cat: 'export',  label: 'Export & Share',       emoji: '📤' },
+    { cat: 'privacy', label: 'Privacy & Performance', emoji: '🔒' },
+  ];
+
+  const BADGE_LABELS = { unique: 'Unique to Mark', new: 'New', free: 'Free' };
+
+  let activeCat = 'all';
+  const container = document.getElementById('featContainer');
+  const emptyState = document.getElementById('emptyState');
+
+  function render() {
+    const visible = activeCat === 'all' ? FEATURES : FEATURES.filter(f => f.category === activeCat);
+    if (!visible.length) {
+      container.innerHTML = '';
+      emptyState.style.display = 'block';
+      return;
+    }
+    emptyState.style.display = 'none';
+
+    let html = '';
+    for (const sec of SECTIONS) {
+      if (activeCat !== 'all' && activeCat !== sec.cat) continue;
+      const items = visible.filter(f => f.category === sec.cat);
+      if (!items.length) continue;
+      html += `
+        <div class="grid-section-header">
+          <span class="grid-section-title">${sec.emoji} ${sec.label}</span>
+          <span class="grid-section-count">${items.length} feature${items.length !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="feat-grid">
+          ${items.map(f => `
+            <div class="feat-card">
+              <div class="feat-card-top">
+                <div class="feat-icon">${f.icon}</div>
+                <div class="feat-info">
+                  <div class="feat-name">${f.name}</div>
+                  <div class="feat-desc">${f.desc}</div>
+                </div>
+              </div>
+              <div class="feat-footer">
+                <div class="feat-tags">${f.tags.map(t => `<span class="feat-tag">${t}</span>`).join('')}</div>
+                <span class="feat-badge feat-badge-${f.badge}">${BADGE_LABELS[f.badge]}</span>
+              </div>
+            </div>`).join('')}
+        </div>`;
+    }
+    container.innerHTML = html;
+  }
+
+  document.querySelectorAll('.cat-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeCat = tab.dataset.cat;
+      render();
+    });
+  });
+
+  render();
+</script>
+</body>
+</html>
